@@ -17,9 +17,12 @@ export default function AuthProvider({ children }) {
       localStorage.removeItem("Users");
     }
   }, [authUser]);
+ 
+  const logout = () => setAuthUser(null);
+
 
   return (
-    <AuthContext.Provider value={{ authUser, setAuthUser }}>
+    <AuthContext.Provider value={{ authUser, setAuthUser, logout }}>
       {children}
     </AuthContext.Provider>
   );

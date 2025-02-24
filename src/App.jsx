@@ -5,6 +5,7 @@ import { Toaster } from 'react-hot-toast';
 import Home from './Components/shared/Home.jsx';  // Importing the Home component
 import Signup from './Components/shared/signup.jsx';
 import Hero from './Components/shared/Hero.jsx';
+import Profile from './Components/shared/Profile.jsx';
 
 // The App function is the main component where all routes and components are managed.
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/hero" element={<Hero/>} />
         <Route path="/signup" element={<Signup/>} />
+        <Route path="/profile" element={<Profile/>} />
 
       </Routes>
       <Toaster/>

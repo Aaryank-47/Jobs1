@@ -6,6 +6,7 @@
     --card-bg: #1A1B23;
     --text-primary: #FFFFFF;
     --text-secondary: #94A3B8;
+    min-width: 70px;
   }
   
   * {
@@ -47,6 +48,7 @@
   .animated-text {
     background: linear-gradient(to right, var(--purple), var(--pink), var(--orange));
     -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
     display: inline-block;
   }
@@ -86,6 +88,7 @@
     font-size: 1.5rem;
     background: linear-gradient(to right, var(--purple), var(--pink));
     -webkit-background-clip: text;
+    background-clip: text;
     color: transparent;
   }
   
@@ -105,7 +108,7 @@
     position: relative;
     overflow: hidden;
     background: var(--card-bg);
-    color: var(--text-primary);
+    color: var(--text-primary) ;
   }
   
   .auth-btn::before {
