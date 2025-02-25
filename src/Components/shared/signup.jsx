@@ -17,7 +17,7 @@ function Signup() {
 
   const onSubmit = async (data) => {
     const userInfo = {
-      fullname: data.fullname,
+      name: data.fullname,
       email: data.email,
       password: data.password,
     };
@@ -118,19 +118,6 @@ function Signup() {
 }
 
 export default Signup;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

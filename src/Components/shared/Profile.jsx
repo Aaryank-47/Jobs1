@@ -1,8 +1,13 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { toast } from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import "./Profile.css";
+// import UserProfile from "./UserProfile";
 
 const ProfileSetup = () => {
+  const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -10,12 +15,9 @@ const ProfileSetup = () => {
     phone: "",
     linkedIn: "",
     github: "",
-    location: "",
-    languages: "",
     workExperience: "",
-    currentlyWorking: "",
+    workingState: false, // Boolean value
     college: "",
-    domain: "",
     skills: "",
     preferredJobs: "",
     profilePicture: null,
@@ -24,7 +26,8 @@ const ProfileSetup = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    const newValue = name === "workingState" ? value === "Yes" : value;
+    setFormData({ ...formData, [name]: newValue });
   };
 
   const handleFileChange = (e) => {
@@ -32,26 +35,53 @@ const ProfileSetup = () => {
     setFormData({ ...formData, [name]: files[0] });
   };
 
-  const handleNext = () => {
-    setPage(2);
-  };
+  const handleNext = () => setPage(2);
+  const handleBack = () => setPage(1);
+  // const handleProfile = () => navigate("/user-profile");
 
-  const handleBack = () => {
-    setPage(1);
-  };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.fullName);
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("phoneNumber", formData.phone);
+    formDataToSend.append("linkedIn", formData.linkedIn);
+    formDataToSend.append("github", formData.github);
+    formDataToSend.append("workExperience", formData.workExperience);
+    formDataToSend.append("workingState", formData.workingState);
+    formDataToSend.append("college", formData.college);
+    formDataToSend.append("skills", formData.skills);
+    formDataToSend.append("preferredJobs", formData.preferredJobs);
+    if (formData.profilePicture) {
+      formDataToSend.append("profilePhoto", formData.profilePicture);
+    }
+    if (formData.resume) {
+      formDataToSend.append("resume", formData.resume);
+    }
+
+    try {
+      const response = await axios.put(
+        "http://localhost:3000/api/v1/users/updateProfile/67bcbb43fbbf50d22dc878dd",
+        formDataToSend,
+        { headers: { "Content-Type": "multipart/form-data" } }
+      );
+
+      toast.success("Profile updated successfully!");
+      setTimeout(() => navigate("/next-page"), 2000); // Redirect after 2s
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Error updating profile!");
+    }
   };
 
   return (
     <div className="profile-container">
-      <motion.div 
-        initial={{ opacity: 0, x: page === 1 ? -100 : 100 }} 
-        animate={{ opacity: 1, x: 0 }} 
-        exit={{ opacity: 0, x: page === 1 ? 100 : -100 }} 
-        transition={{ duration: 0.5 }} 
+      <motion.div
+        initial={{ opacity: 0, x: page === 1 ? -100 : 100 }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: page === 1 ? 100 : -100 }}
+        transition={{ duration: 0.5 }}
         key={page}
         className="form-section"
       >
@@ -67,12 +97,12 @@ const ProfileSetup = () => {
 
               <div className="file-upload">
                 <label>Resume Upload</label>
-                <input type="file" name="resume" onChange={handleFileChange} required/>
+                <input type="file" name="resume" onChange={handleFileChange} required />
               </div>
 
               <div className="input-group">
-                <input type="text" name="fullName" placeholder="Full Name" onChange={handleChange} required/>
-                <input type="email" name="email" placeholder="Email ID" onChange={handleChange} required/>
+                <input type="text" name="fullName" placeholder="Full Name" onChange={handleChange} required />
+                <input type="email" name="email" placeholder="Email ID" onChange={handleChange} required />
               </div>
 
               <div className="input-group">
@@ -82,12 +112,11 @@ const ProfileSetup = () => {
 
               <div className="input-group">
                 <input type="text" name="github" placeholder="GitHub Profile" onChange={handleChange} />
-                <input type="text" name="location" placeholder="Location (City, State)" onChange={handleChange} />
               </div>
 
-              <input type="text" name="languages" placeholder="Languages Spoken" onChange={handleChange} />
-
-              <button type="button" className="next-btn" onClick={handleNext}>Next</button>
+              <button type="button" className="next-btn" onClick={handleNext}>
+                Next
+              </button>
             </form>
           </>
         ) : (
@@ -99,21 +128,24 @@ const ProfileSetup = () => {
 
               <div className="radio-group">
                 <label>Currently Working?</label>
-                <input type="radio" name="currentlyWorking" value="Yes" onChange={handleChange} /> Yes
-                <input type="radio" name="currentlyWorking" value="No" onChange={handleChange} /> No
+                <input type="radio" name="workingState" value="Yes" onChange={handleChange} /> Yes
+                <input type="radio" name="workingState" value="No" onChange={handleChange} /> No
               </div>
 
               <div className="input-group">
                 <input type="text" name="college" placeholder="College / University" onChange={handleChange} />
-                <input type="text" name="domain" placeholder="Domain (e.g., IT, Healthcare)" onChange={handleChange} />
               </div>
 
               <input type="text" name="skills" placeholder="Key Skills" onChange={handleChange} />
               <input type="text" name="preferredJobs" placeholder="Preferred Jobs (e.g., Full-time, Freelance)" onChange={handleChange} />
 
               <div className="button-group">
-                <button type="button" className="back-btn" onClick={handleBack}>Back</button>
-                <button type="submit" className="submit-btn">Save Profile</button>
+                <button type="button" className="back-btn" onClick={handleBack}>
+                  Back
+                </button>
+                <button type="submit" className="submit-btn">
+                  Save Profile
+                </button>
               </div>
             </form>
           </>

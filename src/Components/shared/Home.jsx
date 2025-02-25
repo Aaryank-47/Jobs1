@@ -20,7 +20,7 @@
 
 
    return (
-     <div style={{ minHeight: "100vh",minWidth: "100vw", backgroundColor: "#1a1a1a", color: "white", padding: "1rem", display: "flex", alignItems: "center", justifyContent: "center", width:"100vw" }}>
+     <div style={{ height: "500px", backgroundColor: "#1a1a1a", color: "white", padding: "1rem", display: "flex", alignItems: "center", justifyContent: "center", width:"500px" }}>
        <div style={{ width: "100%", maxWidth: "64rem", display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", alignItems: "center" }}>
          <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
            <motion.div initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.5 }} style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>

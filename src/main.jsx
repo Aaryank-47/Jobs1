@@ -5,11 +5,11 @@ import App from "./App.jsx";
 import AuthProvider from "./Components/context/AuthProvider.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+   <React.StrictMode> 
     <AuthProvider>
       <MemoryRouter> {/* Wrap the app in MemoryRouter */}
         <App />
       </MemoryRouter>
     </AuthProvider>
-  </React.StrictMode>
+   </React.StrictMode> 
 );
